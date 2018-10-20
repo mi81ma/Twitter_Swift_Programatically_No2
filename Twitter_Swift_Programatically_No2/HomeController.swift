@@ -24,6 +24,7 @@ class WordCell: UICollectionViewCell {
     let wordLabel: UILabel = {
         let label = UILabel()
         label.text = "TEST TEST TEST"
+        // AutoresizingMask Off
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -50,11 +51,15 @@ class WordCell: UICollectionViewCell {
 class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
     let cellId = "cellId"
+    let headerId = "headerId"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.backgroundColor = .white
         collectionView?.register(WordCell.self, forCellWithReuseIdentifier: cellId)
+
+        // make Header
+        collectionView?.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
     }
 
 
@@ -72,8 +77,25 @@ class HomeController: UICollectionViewController, UICollectionViewDelegateFlowLa
         return cell
     }
 
-    // Adjust Collection View Hight
+    // Adjust Cell View Hight
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: 50)
+    }
+
+
+/*
+ Header & Footer
+ */
+
+    // UICollectionReusableViewとは、CollectionViewにおけるHeaderとFooterのこと
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath)
+        header.backgroundColor = .blue
+        return header
+    }
+
+    // Adjust Header Size
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 50)
     }
 
